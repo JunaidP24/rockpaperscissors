@@ -6,8 +6,8 @@ function getComputerChoice(){
     return choices[Math.floor(Math.random()*3)];
 }
 
-function playRound(playerSelection, computerSelection){
-    playerSelection = playerSelection.toLowerCase();
+function playRound(playerSelection){
+    computerSelection = getComputerChoice();
     const roundLoss = `You Lose! ${computerSelection} beats ${playerSelection}`;
     const roundWon = `You Won! ${playerSelection} beats ${computerSelection}`;
     const roundTie = 'Twas a draw!'
@@ -53,15 +53,43 @@ function playRound(playerSelection, computerSelection){
     }
 }
 
-function game(){
-    for (let i = 0; i < 5; i++){
-        const playerSelection = prompt("Make your choice of Rock, Paper, or Scissors");
-        const computerSelection = getComputerChoice();
-        console.log(playRound(playerSelection,computerSelection));
+const checkWinner = (playerScore,computerScore) => {
+    gameScore = `Score: ${playerScore} - ${computerScore}`;
+    score.textContent = gameScore;
+    if (playerScore === 5 || computerScore === 5){
+        if (playerScore < computerScore){
+            results.innerText = 'You LOST! Refresh the page to play again!';
+        }
+        else{
+            results.innerText = 'Winner Winner Chicken Dinner! Refresh the page to play again!';
+        }
+        rockBtn.disabled = true;
+        paperBtn.disabled = true;
+        scissorsBtn.disabled = true;
     }
-    if (playerScore > computerScore){console.log("Winner, Winner Chicken Dinner!");}
-    else if (playerScore == computerScore){console.log("Tie Game, Unlucky!");}
-    else {console.log("Boohoo, You lost!");}
 }
 
-game();
+const rockBtn = document.querySelector('.rock');
+const paperBtn = document.querySelector('.paper');
+const scissorsBtn = document.querySelector('.scissors');
+const container = document.querySelector('.container');
+const score = document.querySelector('.score');
+const results = document.createElement('div');
+results.classList.add('results');
+
+container.appendChild(results);
+
+rockBtn.addEventListener('click', () => {
+    results.textContent = playRound('rock');
+    checkWinner(playerScore,computerScore);
+});
+
+paperBtn.addEventListener('click', () =>{
+    results.textContent = playRound('paper');
+    checkWinner(playerScore,computerScore);
+});
+
+scissorsBtn.addEventListener('click', () =>{
+    results.textContent = playRound('scissors');
+    checkWinner(playerScore,computerScore);
+});
